@@ -20,6 +20,7 @@ class HomeActivity : AppCompatActivity(), DefaultHomePresenter.View {
 
     @Inject
     lateinit var presenter: DefaultHomePresenter
+    private var column: Int = 3
 
     private var adapter: HomeMoviesAdapter? = null
 
@@ -32,9 +33,9 @@ class HomeActivity : AppCompatActivity(), DefaultHomePresenter.View {
     }
 
     fun initViews(){
-        movie_list.layoutManager = GridLayoutManager(this, 2)
+        movie_list.layoutManager = GridLayoutManager(this, column)
         movie_list.setHasFixedSize(true)
-        adapter = HomeMoviesAdapter()
+        adapter = HomeMoviesAdapter(column)
         movie_list.adapter = adapter
     }
 
