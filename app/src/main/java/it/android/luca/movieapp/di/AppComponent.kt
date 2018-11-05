@@ -1,0 +1,16 @@
+package it.android.luca.movieapp.di
+
+import dagger.Component
+import it.android.luca.movieapp.App
+import it.android.luca.movieapp.network.MovieService
+import javax.inject.Singleton
+
+
+@Singleton
+@Component(modules = arrayOf(NetworkModule::class))
+interface AppComponent {
+
+    fun movieService(): MovieService
+
+    fun inject(application: App)
+}
