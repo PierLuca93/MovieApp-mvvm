@@ -7,17 +7,16 @@ import dagger.Provides
 import javax.inject.Singleton
 import com.google.gson.GsonBuilder
 import dagger.Module
+import it.android.luca.movieapp.network.MovieApi
 import it.android.luca.movieapp.network.MovieService
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import okhttp3.HttpUrl
 
 
 @Module
-class NetworkModule() {
+class NetworkModule {
 
-    private var BASE_URL = "https://api.themoviedb.org/3/movie/"
+    private val BASE_URL = "https://api.themoviedb.org/3/movie/"
 
     @Singleton
     @Provides
@@ -27,8 +26,13 @@ class NetworkModule() {
     }
 
     @Provides
-    fun provideMovieService(retrofit: Retrofit): MovieService {
-        return retrofit.create(MovieService::class.java)
+    fun provideMovieApi(retrofit: Retrofit): MovieApi {
+        return retrofit.create(MovieApi::class.java)
+    }
+
+    @Provides
+    fun provideMovieService(api: MovieApi): MovieService {
+        return MovieService(api)
     }
 
 

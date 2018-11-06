@@ -34,6 +34,11 @@ class HomeActivity : AppCompatActivity(), DefaultHomePresenter.View {
         presenter.fetchMovies()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.clear()
+    }
+
     private fun initViews(){
         movie_list.layoutManager = GridLayoutManager(this, column)
         movie_list.setHasFixedSize(true)

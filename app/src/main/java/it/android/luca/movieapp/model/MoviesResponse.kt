@@ -1,4 +1,4 @@
-package it.android.luca.movieapp.network
+package it.android.luca.movieapp.model
 
 import it.android.luca.movieapp.repository.Movie
 

@@ -1,15 +1,14 @@
 package it.android.luca.movieapp.network
 
 import io.reactivex.Observable
-import it.android.luca.movieapp.repository.Movie
-import retrofit2.http.GET
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import it.android.luca.movieapp.model.MoviesResponse
 
+class MovieService(private val api: MovieApi) {
 
-interface MovieService {
-    @GET("top_rated")
-    fun topRated(): Observable<MoviesResponse>
-
-    @GET("132")
-    fun unaltro(): Observable<Movie>
-
+    fun getTopRated(): Observable<MoviesResponse> =
+        api.topRated()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
 }
