@@ -11,9 +11,7 @@ import it.android.luca.movieapp.R
 import it.android.luca.movieapp.repository.Movie
 import android.app.Activity
 import android.util.DisplayMetrics
-
-
-
+import it.android.luca.movieapp.util.Utils.Companion.convertDpToPixel
 
 
 class HomeMoviesAdapter(val column: Int) : RecyclerView.Adapter<HomeMoviesAdapter.MovieHolder>() {
@@ -51,7 +49,7 @@ class HomeMoviesAdapter(val column: Int) : RecyclerView.Adapter<HomeMoviesAdapte
             itemView.setOnClickListener(this)
             val displaymetrics = DisplayMetrics()
             (context as Activity).windowManager.defaultDisplay.getMetrics(displaymetrics)
-            widtha = displaymetrics.widthPixels / column
+            widtha = (displaymetrics.widthPixels-convertDpToPixel(8, context)) / column
             itemView.layoutParams.width = widtha
             itemView.layoutParams.height = (widtha*1.5).toInt()
 

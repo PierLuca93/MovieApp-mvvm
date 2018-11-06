@@ -10,7 +10,7 @@ import it.android.luca.movieapp.presenter.DefaultHomePresenter
 import it.android.luca.movieapp.R
 import it.android.luca.movieapp.di.*
 import it.android.luca.movieapp.repository.Movie
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_home.*
 import javax.inject.Inject
 
 
@@ -28,7 +28,7 @@ class HomeActivity : AppCompatActivity(), DefaultHomePresenter.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_home)
         initDagger()
         initViews()
         presenter.fetchMovies()
