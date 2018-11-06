@@ -3,6 +3,8 @@ package it.android.luca.movieapp.ui
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import it.android.luca.movieapp.App
 import it.android.luca.movieapp.presenter.DefaultHomePresenter
 import it.android.luca.movieapp.R
@@ -20,7 +22,7 @@ class HomeActivity : AppCompatActivity(), DefaultHomePresenter.View {
 
     @Inject
     lateinit var presenter: DefaultHomePresenter
-    private var column: Int = 3
+    private var column: Int = 2
 
     private var adapter: HomeMoviesAdapter? = null
 
@@ -32,14 +34,14 @@ class HomeActivity : AppCompatActivity(), DefaultHomePresenter.View {
         presenter.fetchMovies()
     }
 
-    fun initViews(){
+    private fun initViews(){
         movie_list.layoutManager = GridLayoutManager(this, column)
         movie_list.setHasFixedSize(true)
         adapter = HomeMoviesAdapter(column)
         movie_list.adapter = adapter
     }
 
-    fun initDagger(){
+    private fun initDagger(){
         DaggerHomeComponent.builder()
             .appComponent((application as App).getAppComponent())
             .homeModule(HomeModule(this))
@@ -48,5 +50,9 @@ class HomeActivity : AppCompatActivity(), DefaultHomePresenter.View {
 
     override fun showMovies(items: List<Movie>) {
         adapter?.setItems(items)
+    }
+
+    override fun showLoading(show: Boolean) {
+        loading.visibility = if (show) VISIBLE else GONE
     }
 }
