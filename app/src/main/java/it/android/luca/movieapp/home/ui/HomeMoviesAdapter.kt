@@ -1,4 +1,4 @@
-package it.android.luca.movieapp.ui
+package it.android.luca.movieapp.home.ui
 
 import android.content.Context
 import android.support.v7.widget.AppCompatImageView

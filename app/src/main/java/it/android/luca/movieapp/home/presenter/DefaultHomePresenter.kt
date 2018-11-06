@@ -1,4 +1,4 @@
-package it.android.luca.movieapp.presenter
+package it.android.luca.movieapp.home.presenter
 
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

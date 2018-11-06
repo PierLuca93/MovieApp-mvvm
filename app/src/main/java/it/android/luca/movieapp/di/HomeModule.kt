@@ -2,7 +2,7 @@ package it.android.luca.movieapp.di
 
 import dagger.Provides
 import dagger.Module
-import it.android.luca.movieapp.presenter.DefaultHomePresenter
+import it.android.luca.movieapp.home.presenter.DefaultHomePresenter
 import it.android.luca.movieapp.network.MovieService
 
 
