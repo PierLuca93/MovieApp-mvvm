@@ -10,13 +10,16 @@ import com.bumptech.glide.Glide
 import it.android.luca.movieapp.R
 import it.android.luca.movieapp.repository.Movie
 import android.app.Activity
+import android.content.Intent
 import android.util.DisplayMetrics
+import it.android.luca.movieapp.detail.ui.DetailActivity
 import it.android.luca.movieapp.util.Utils.Companion.convertDpToPixel
 
 
 class HomeMoviesAdapter(val column: Int) : RecyclerView.Adapter<HomeMoviesAdapter.MovieHolder>() {
 
     private var homeList: List<Movie> = ArrayList()
+    private val IMAGE_URL = "https://image.tmdb.org/t/p/original"
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): MovieHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.home_item, parent, false)
@@ -29,7 +32,7 @@ class HomeMoviesAdapter(val column: Int) : RecyclerView.Adapter<HomeMoviesAdapte
     override fun onBindViewHolder(holder: MovieHolder, position: Int) {
 
         Glide.with(holder.context)
-            .load("https://image.tmdb.org/t/p/original"+homeList[position].poster_path)
+            .load(IMAGE_URL+homeList[position].poster_path)
             .into(holder.poster)
     }
 
@@ -43,19 +46,14 @@ class HomeMoviesAdapter(val column: Int) : RecyclerView.Adapter<HomeMoviesAdapte
 
 
         val poster: AppCompatImageView = itemView.findViewById(R.id.poster)
-        val widtha: Int
 
         init {
             itemView.setOnClickListener(this)
-            val displaymetrics = DisplayMetrics()
-            (context as Activity).windowManager.defaultDisplay.getMetrics(displaymetrics)
-            widtha = (displaymetrics.widthPixels-convertDpToPixel(8, context)) / column
-            itemView.layoutParams.width = widtha
-            itemView.layoutParams.height = (widtha*1.5).toInt()
-
         }
 
-        override fun onClick(p0: View?) {
+        override fun onClick(v: View?) {
+            val intent = Intent(context, DetailActivity::class.java)
+            context.startActivity(intent)
         }
 
     }
