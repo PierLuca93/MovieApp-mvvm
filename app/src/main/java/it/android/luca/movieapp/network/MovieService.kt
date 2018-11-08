@@ -7,7 +7,7 @@ import it.android.luca.movieapp.model.MoviesList
 
 class MovieService(private val api: MovieApi) {
 
-    fun getTopRated(): Observable<MoviesList> =
+    fun getTopRated(): Observable<MoviesList?> =
         api.topRated()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())

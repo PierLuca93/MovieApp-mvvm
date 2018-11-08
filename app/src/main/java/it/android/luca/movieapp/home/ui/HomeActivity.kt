@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.Toast
 import it.android.luca.movieapp.App
+import it.android.luca.movieapp.BaseActivity
 import it.android.luca.movieapp.home.presenter.DefaultHomePresenter
 import it.android.luca.movieapp.R
 import it.android.luca.movieapp.di.*
@@ -17,7 +19,7 @@ import javax.inject.Inject
 
 
 
-class HomeActivity : AppCompatActivity(), DefaultHomePresenter.View {
+class HomeActivity : BaseActivity(), DefaultHomePresenter.View {
 
 
     @Inject
@@ -60,4 +62,5 @@ class HomeActivity : AppCompatActivity(), DefaultHomePresenter.View {
     override fun showLoading(show: Boolean) {
         loading.visibility = if (show) VISIBLE else GONE
     }
+
 }

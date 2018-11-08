@@ -8,7 +8,7 @@ import retrofit2.http.GET
 
 interface MovieApi {
     @GET("top_rated")
-    fun topRated(): Observable<MoviesList>
+    fun topRated(): Observable<MoviesList?>
 
     @GET("132")
     fun unaltro(): Observable<Movie>
