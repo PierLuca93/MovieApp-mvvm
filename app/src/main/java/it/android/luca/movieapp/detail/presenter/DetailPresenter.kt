@@ -1,5 +1,5 @@
 package it.android.luca.movieapp.detail.presenter
 
 interface DetailPresenter {
-    fun fetchMovie()
+    fun fetchMovie(id: String)
 }

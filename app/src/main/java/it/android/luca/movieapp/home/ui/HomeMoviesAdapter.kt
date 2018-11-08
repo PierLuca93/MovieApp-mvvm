@@ -52,8 +52,7 @@ class HomeMoviesAdapter(val column: Int) : RecyclerView.Adapter<HomeMoviesAdapte
         }
 
         override fun onClick(v: View?) {
-            val intent = Intent(context, DetailActivity::class.java)
-            context.startActivity(intent)
+            DetailActivity.createIntent(context, "123")
         }
 
     }

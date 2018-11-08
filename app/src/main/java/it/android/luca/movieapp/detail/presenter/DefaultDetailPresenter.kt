@@ -4,44 +4,41 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
+import it.android.luca.movieapp.BasePresenterView
 import it.android.luca.movieapp.home.presenter.HomePresenter
 import it.android.luca.movieapp.network.MovieService
 import it.android.luca.movieapp.repository.Movie
 
-class DefaultDetailPresenter(private val view: View):
+class DefaultDetailPresenter(private val view: View, private val service: MovieService):
     DetailPresenter {
 
-    var homeFeed: BehaviorSubject<Boolean> = BehaviorSubject.create()
+    var movieDetailSubject: BehaviorSubject<String> = BehaviorSubject.create()
     val subscription: CompositeDisposable = CompositeDisposable()
 
     init {
-//        subscription
-//            .add(homeFeed
-//            .subscribe{
-//                service.getTopRated()
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribeOn(Schedulers.io())
-//                    .filter{it != null}
-//                    .doFinally{ }
-//                    .subscribe{
-//                        view.showMovies(it.results)
-//                    }
-//            })
+        subscription
+            .add(movieDetailSubject
+            .subscribe{
+                service.getMovie(it)
+                    .filter{it != null}
+                    .doFinally{ }
+                    .subscribe{
+                        view.showMovie(it)
+                    }
+            })
     }
 
     fun clear(){
-//        subscription.clear()
+        subscription.clear()
     }
 
-    override fun fetchMovie() {
-//        homeFeed.onNext(true)
+    override fun fetchMovie(id: String) {
+        movieDetailSubject.onNext(id)
     }
 
 
 
-    interface View{
+    interface View: BasePresenterView{
         fun showMovie(item: Movie)
-
-//        fun showLoading(show: Boolean)
     }
 }

@@ -59,8 +59,4 @@ class HomeActivity : BaseActivity(), DefaultHomePresenter.View {
         adapter?.setItems(items)
     }
 
-    override fun showLoading(show: Boolean) {
-        loading.visibility = if (show) VISIBLE else GONE
-    }
-
 }

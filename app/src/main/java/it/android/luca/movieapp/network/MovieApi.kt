@@ -4,13 +4,15 @@ import io.reactivex.Observable
 import it.android.luca.movieapp.model.MoviesList
 import it.android.luca.movieapp.repository.Movie
 import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 
 interface MovieApi {
     @GET("top_rated")
     fun topRated(): Observable<MoviesList?>
 
-    @GET("132")
-    fun unaltro(): Observable<Movie>
+    @GET("{id}")
+    fun movie(@Path(value = "id", encoded = true) id: String): Observable<Movie>
 
 }

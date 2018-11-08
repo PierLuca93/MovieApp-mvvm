@@ -20,8 +20,6 @@ class DefaultHomePresenter(private val service: MovieService, private val view: 
             .add(homeFeed
                 .subscribe {
                     service.getTopRated()
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeOn(Schedulers.io())
                         .filter { it != null }
                         .doFinally {
                             view.showLoading(false)
@@ -47,7 +45,5 @@ class DefaultHomePresenter(private val service: MovieService, private val view: 
 
     interface View: BasePresenterView {
         fun showMovies(items: List<Movie>)
-
-        fun showLoading(show: Boolean)
     }
 }

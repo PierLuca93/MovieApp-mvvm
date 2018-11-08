@@ -1,19 +1,40 @@
 package it.android.luca.movieapp.detail.ui
 
-import android.support.v7.app.AppCompatActivity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.view.View
+import android.support.v4.content.ContextCompat.startActivity
+import it.android.luca.movieapp.App
+import it.android.luca.movieapp.BaseActivity
 import it.android.luca.movieapp.R
 import it.android.luca.movieapp.detail.presenter.DefaultDetailPresenter
+import it.android.luca.movieapp.di.DaggerDetailComponent
+import it.android.luca.movieapp.di.DaggerHomeComponent
+import it.android.luca.movieapp.di.DetailModule
+import it.android.luca.movieapp.di.HomeModule
+import it.android.luca.movieapp.home.presenter.DefaultHomePresenter
 import it.android.luca.movieapp.repository.Movie
 import kotlinx.android.synthetic.main.activity_detail.*
-import kotlinx.android.synthetic.main.activity_home.*
+import javax.inject.Inject
 
-class DetailActivity : AppCompatActivity(), DefaultDetailPresenter.View {
+class DetailActivity : BaseActivity(), DefaultDetailPresenter.View {
+
+    @Inject
+    lateinit var presenter: DefaultDetailPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
+        initDagger()
+        val id = intent?.extras?.getString(MOVIE_ID)
+        id?.let { presenter.fetchMovie(it) }
+    }
+
+    private fun initDagger(){
+        DaggerDetailComponent.builder()
+            .appComponent((application as App).getAppComponent())
+            .detailModule(DetailModule(this))
+            .build().inject(this)
     }
 
     override fun showMovie(item: Movie) {
@@ -21,7 +42,14 @@ class DetailActivity : AppCompatActivity(), DefaultDetailPresenter.View {
         release_date.text = item.release_date
     }
 
-//    override fun showLoading(show: Boolean) {
-//        loading.visibility = if (show) View.VISIBLE else View.GONE
-//    }
+    companion object {
+
+        val MOVIE_ID = "movie_id"
+
+        fun createIntent(context: Context, id: String){
+            val intent = Intent(context, DetailActivity::class.java)
+            intent.putExtra(MOVIE_ID, id)
+            context.startActivity(intent)
+        }
+    }
 }
