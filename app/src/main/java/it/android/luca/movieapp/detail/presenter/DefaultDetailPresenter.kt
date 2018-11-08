@@ -21,7 +21,7 @@ class DefaultDetailPresenter(private val view: View, private val service: MovieS
             .subscribe{
                 service.getMovie(it)
                     .filter{it != null}
-                    .doFinally{ }
+                    .doFinally{ view.showLoading(false) }
                     .subscribe{
                         view.showMovie(it)
                     }
