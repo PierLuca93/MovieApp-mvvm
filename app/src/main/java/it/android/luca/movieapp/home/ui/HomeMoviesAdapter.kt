@@ -13,13 +13,14 @@ import android.app.Activity
 import android.content.Intent
 import android.util.DisplayMetrics
 import it.android.luca.movieapp.detail.ui.DetailActivity
+import it.android.luca.movieapp.home.presenter.DefaultHomePresenter
 import it.android.luca.movieapp.network.MovieApi.Companion.IMAGE_URL
 import it.android.luca.movieapp.util.Utils.Companion.convertDpToPixel
 
 
-class HomeMoviesAdapter(val column: Int) : RecyclerView.Adapter<HomeMoviesAdapter.MovieHolder>() {
+class HomeMoviesAdapter(val presenter: DefaultHomePresenter) : RecyclerView.Adapter<HomeMoviesAdapter.MovieHolder>() {
 
-    private var homeList: List<Movie> = ArrayList()
+    private var homeList: ArrayList<Movie> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.home_item, parent, false)
@@ -36,9 +37,10 @@ class HomeMoviesAdapter(val column: Int) : RecyclerView.Adapter<HomeMoviesAdapte
             .into(holder.poster)
     }
 
-    fun setItems(movies: List<Movie>){
-        homeList = movies
-        notifyDataSetChanged()
+    fun addItems(movies: List<Movie>){
+        val lastItem = itemCount
+        homeList.addAll(movies)
+        notifyItemRangeInserted(lastItem, itemCount - 1)
     }
 
 

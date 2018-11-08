@@ -1,5 +1,6 @@
 package it.android.luca.movieapp.home.presenter
 
 interface HomePresenter {
-    fun fetchMovies()
+    fun fetchMovies(page: Int)
+    fun loadNextPage(page: Int)
 }

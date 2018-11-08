@@ -12,14 +12,14 @@ import it.android.luca.movieapp.repository.Movie
 class DefaultHomePresenter(private val service: MovieService, private val view: View) :
     HomePresenter {
 
-    var homeFeed: BehaviorSubject<Boolean> = BehaviorSubject.create()
+    var homeFeed: BehaviorSubject<Int> = BehaviorSubject.create()
     val subscription: CompositeDisposable = CompositeDisposable()
 
     init {
         subscription
             .add(homeFeed
                 .subscribe {
-                    service.getTopRated()
+                    service.getTopRated(it)
                         .filter { it != null }
                         .doFinally {
                             view.showLoading(false)
@@ -38,8 +38,12 @@ class DefaultHomePresenter(private val service: MovieService, private val view: 
         subscription.clear()
     }
 
-    override fun fetchMovies() {
-        homeFeed.onNext(true)
+    override fun fetchMovies(page: Int) {
+        homeFeed.onNext(page)
+    }
+
+    override fun loadNextPage(page: Int) {
+        fetchMovies(page)
     }
 
 

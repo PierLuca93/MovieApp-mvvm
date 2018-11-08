@@ -10,7 +10,7 @@ import retrofit2.http.Query
 
 interface MovieApi {
     @GET("top_rated")
-    fun topRated(): Observable<MoviesList?>
+    fun topRated(@Query("page") page: String): Observable<MoviesList?>
 
     @GET("{id}")
     fun movie(@Path(value = "id", encoded = true) id: String): Observable<Movie>

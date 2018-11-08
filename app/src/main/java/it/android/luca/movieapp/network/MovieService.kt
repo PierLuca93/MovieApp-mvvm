@@ -8,8 +8,8 @@ import it.android.luca.movieapp.repository.Movie
 
 class MovieService(private val api: MovieApi) {
 
-    fun getTopRated(): Observable<MoviesList?> =
-        api.topRated()
+    fun getTopRated(page: Int): Observable<MoviesList?> =
+        api.topRated(page.toString())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
 
