@@ -9,7 +9,7 @@ import it.android.luca.movieapp.home.presenter.HomePresenter
 import it.android.luca.movieapp.network.MovieService
 import it.android.luca.movieapp.repository.Movie
 
-class DefaultDetailPresenter(private val view: View, private val service: MovieService):
+class DefaultDetailPresenter(private val view: View, private val service: MovieService) :
     DetailPresenter {
 
     var movieDetailSubject: BehaviorSubject<String> = BehaviorSubject.create()
@@ -18,17 +18,21 @@ class DefaultDetailPresenter(private val view: View, private val service: MovieS
     init {
         subscription
             .add(movieDetailSubject
-            .subscribe{
-                service.getMovie(it)
-                    .filter{it != null}
-                    .doFinally{ view.showLoading(false) }
-                    .subscribe{
-                        view.showMovie(it)
-                    }
-            })
+                .subscribe {
+                    service.getMovie(it)
+                        .filter { it != null }
+                        .doFinally { view.showLoading(false) }
+                        .subscribe(
+                            {
+                                view.showMovie(it)
+                            },
+                            {
+                                it.message?.let { view.showError(it) }
+                            })
+                })
     }
 
-    fun clear(){
+    fun clear() {
         subscription.clear()
     }
 
@@ -37,8 +41,7 @@ class DefaultDetailPresenter(private val view: View, private val service: MovieS
     }
 
 
-
-    interface View: BasePresenterView{
+    interface View : BasePresenterView {
         fun showMovie(item: Movie)
     }
 }

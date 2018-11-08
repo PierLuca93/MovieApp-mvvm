@@ -2,6 +2,7 @@ package it.android.luca.movieapp.repository
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Movie(
     @SerializedName("vote_count")

@@ -12,12 +12,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
+            android:textSize="32sp"
             tools:text="Title"/>
 
     <android.support.v7.widget.AppCompatImageView
             android:id="@+id/poster"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="@dimen/detail_padding_poster"
             app:layout_constraintTop_toBottomOf="@+id/page_title"/>
 
     <TextView
@@ -25,6 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
+            android:textSize="18sp"
             app:layout_constraintTop_toBottomOf="@+id/poster"
             tools:text="10-04-1993"/>
 

@@ -7,6 +7,7 @@ import dagger.Provides
 import javax.inject.Singleton
 import com.google.gson.GsonBuilder
 import dagger.Module
+import it.android.luca.movieapp.BuildConfig
 import it.android.luca.movieapp.network.MovieApi
 import it.android.luca.movieapp.network.MovieService
 import okhttp3.OkHttpClient
@@ -53,7 +54,7 @@ class NetworkModule {
             val original = chain.request()
             val originalHttpUrl = original.url()
             val url = originalHttpUrl.newBuilder()
-                .addQueryParameter("api_key", "3134412295e446d1fd6113dda83e1cef")
+                .addQueryParameter("api_key", BuildConfig.APIKEY)
                 .build()
             val requestBuilder = original.newBuilder()
                 .url(url)

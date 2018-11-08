@@ -33,6 +33,11 @@ class DetailActivity : BaseActivity(), DefaultDetailPresenter.View {
         id?.let { presenter.fetchMovie(it) }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.clear()
+    }
+
     private fun initDagger(){
         DaggerDetailComponent.builder()
             .appComponent((application as App).getAppComponent())
