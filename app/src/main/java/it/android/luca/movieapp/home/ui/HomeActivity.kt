@@ -3,6 +3,8 @@ package it.android.luca.movieapp.home.ui
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.LinearLayoutManager.VERTICAL
 import android.support.v7.widget.RecyclerView
 import it.android.luca.movieapp.App
 import it.android.luca.movieapp.BaseActivity
@@ -31,23 +33,25 @@ class HomeActivity : BaseActivity(), DefaultHomePresenter.View{
         setContentView(R.layout.activity_home)
         initDagger()
         initViews()
-        presenter.fetchMovies(1)
+        presenter.fetchMovies()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.clear()
+//        presenter.clear()
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
-        outState?.putInt("position", homeLayoutManager?.findLastCompletelyVisibleItemPosition()!!)
+        outState?.putParcelable("position", movie_list.layoutManager?.onSaveInstanceState())
     }
+
+    private var state: LinearLayoutManager.SavedState? = null
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
-        homeLayoutManager?.scrollToPosition(savedInstanceState?.getInt("position")!!)
-        movie_list.layoutManager = homeLayoutManager
+        state = savedInstanceState?.getParcelable("position")
+//        movie_list.layoutManager = homeLayoutManager
     }
 
 
@@ -61,7 +65,7 @@ class HomeActivity : BaseActivity(), DefaultHomePresenter.View{
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if(homeLayoutManager!!.findLastCompletelyVisibleItemPosition() == adapter!!.itemCount-1){
-                    presenter.loadNextPage(adapter!!.itemCount/20+2)
+                    presenter.loadNextPage(adapter!!.itemCount/20+1)
                 }
             }
         })
@@ -76,6 +80,7 @@ class HomeActivity : BaseActivity(), DefaultHomePresenter.View{
 
     override fun showMovies(items: List<Movie>) {
         adapter?.addItems(items)
+        state?.let { movie_list.layoutManager?.onRestoreInstanceState(it) }
     }
 
 }

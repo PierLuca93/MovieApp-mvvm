@@ -20,6 +20,7 @@ import it.android.luca.movieapp.util.Utils.Companion.convertDpToPixel
 
 class HomeMoviesAdapter(val presenter: DefaultHomePresenter) : RecyclerView.Adapter<HomeMoviesAdapter.MovieHolder>() {
 
+
     private var homeList: ArrayList<Movie> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieHolder {
@@ -38,9 +39,8 @@ class HomeMoviesAdapter(val presenter: DefaultHomePresenter) : RecyclerView.Adap
     }
 
     fun addItems(movies: List<Movie>){
-        val lastItem = itemCount
-        homeList.addAll(movies)
-        notifyItemRangeInserted(lastItem, itemCount - 1)
+            homeList.addAll(movies)
+            notifyDataSetChanged()
     }
 
 

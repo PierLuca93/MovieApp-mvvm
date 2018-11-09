@@ -38,12 +38,12 @@ class DefaultHomePresenter(private val service: MovieService, private val view: 
         subscription.clear()
     }
 
-    override fun fetchMovies(page: Int) {
-        homeFeed.onNext(page)
+    override fun fetchMovies() {
+        homeFeed.onNext(1)
     }
 
     override fun loadNextPage(page: Int) {
-        fetchMovies(page)
+        homeFeed.onNext(page)
     }
 
 
