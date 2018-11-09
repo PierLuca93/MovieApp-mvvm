@@ -1,16 +1,22 @@
 package it.android.luca.movieapp.detail.ui
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat.startActivity
 import android.text.TextUtils
 import android.view.View
+import android.view.View.VISIBLE
 import com.bumptech.glide.Glide
 import it.android.luca.movieapp.App
 import it.android.luca.movieapp.BaseActivity
 import it.android.luca.movieapp.R
+import it.android.luca.movieapp.R.id.*
 import it.android.luca.movieapp.detail.presenter.DefaultDetailPresenter
+import it.android.luca.movieapp.detail.viewmodel.DetailViewModel
+import it.android.luca.movieapp.detail.viewmodel.DetailViewModelFactory
 import it.android.luca.movieapp.di.DaggerDetailComponent
 import it.android.luca.movieapp.di.DaggerHomeComponent
 import it.android.luca.movieapp.di.DetailModule
@@ -25,7 +31,7 @@ import javax.inject.Inject
 class DetailActivity : BaseActivity(), DefaultDetailPresenter.View {
 
     @Inject
-    lateinit var presenter: DefaultDetailPresenter
+    lateinit var factory: DetailViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,12 +39,16 @@ class DetailActivity : BaseActivity(), DefaultDetailPresenter.View {
         initDagger()
         initViews()
         val id = intent?.extras?.getString(MOVIE_ID)
-        id?.let { presenter.fetchMovie(it) }
+        val viewModel = ViewModelProviders.of(this, factory).get(DetailViewModel::class.java)
+        viewModel.fetchMovie(id!!)
+        viewModel.movieDetail.observe(this@DetailActivity, Observer { it?.let { showMovie(it) } })
+        viewModel.inProgress.observe(this@DetailActivity, Observer { showLoading(it == VISIBLE) } )
+        viewModel.errorMessage.observe(this@DetailActivity, Observer { it?.let{ showError(it) } })
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.clear()
+//        presenter.clear()
     }
 
     private fun initViews(){
