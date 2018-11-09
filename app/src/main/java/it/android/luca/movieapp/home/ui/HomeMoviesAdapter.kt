@@ -39,9 +39,12 @@ class HomeMoviesAdapter(val presenter: DefaultHomePresenter) : RecyclerView.Adap
     }
 
     fun addItems(movies: List<Movie>){
+//        if(!homeList.containsAll(movies)) {
             homeList.addAll(movies)
             notifyDataSetChanged()
+//        }
     }
+
 
 
     class MovieHolder(itemView: View, val context: Context) : RecyclerView.ViewHolder(itemView), View.OnClickListener {

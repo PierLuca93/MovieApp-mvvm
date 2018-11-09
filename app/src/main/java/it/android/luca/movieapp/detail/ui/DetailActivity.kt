@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat.startActivity
+import android.text.TextUtils
+import android.view.View
 import com.bumptech.glide.Glide
 import it.android.luca.movieapp.App
 import it.android.luca.movieapp.BaseActivity
@@ -29,6 +31,7 @@ class DetailActivity : BaseActivity(), DefaultDetailPresenter.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
         initDagger()
+        initViews()
         val id = intent?.extras?.getString(MOVIE_ID)
         id?.let { presenter.fetchMovie(it) }
     }
@@ -36,6 +39,16 @@ class DetailActivity : BaseActivity(), DefaultDetailPresenter.View {
     override fun onDestroy() {
         super.onDestroy()
         presenter.clear()
+    }
+
+    private fun initViews(){
+        description.setOnClickListener {
+            if(description.maxLines == 3) {
+                description.maxLines = Int.MAX_VALUE
+            } else {
+                description.maxLines = 3
+            }
+        }
     }
 
     private fun initDagger(){
@@ -48,6 +61,7 @@ class DetailActivity : BaseActivity(), DefaultDetailPresenter.View {
     override fun showMovie(item: Movie) {
         page_title.text = item.title
         release_date.text = item.release_date
+        description.text = item.overview
         Glide.with(this)
             .load(IMAGE_URL+item.poster_path)
             .into(poster)

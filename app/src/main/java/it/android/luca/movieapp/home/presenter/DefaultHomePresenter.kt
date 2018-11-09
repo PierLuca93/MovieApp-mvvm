@@ -13,7 +13,7 @@ class DefaultHomePresenter(private val service: MovieService, private val view: 
     HomePresenter {
 
     var homeFeed: BehaviorSubject<Int> = BehaviorSubject.create()
-    val subscription: CompositeDisposable = CompositeDisposable()
+    private val subscription: CompositeDisposable = CompositeDisposable()
 
     init {
         subscription

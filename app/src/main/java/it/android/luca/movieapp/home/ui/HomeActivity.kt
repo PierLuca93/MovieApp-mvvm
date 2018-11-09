@@ -27,6 +27,7 @@ class HomeActivity : BaseActivity(), DefaultHomePresenter.View{
     private var column: Int = 2
     private var homeLayoutManager: GridLayoutManager? = null
     private var adapter: HomeMoviesAdapter? = null
+    private var state: LinearLayoutManager.SavedState? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +39,7 @@ class HomeActivity : BaseActivity(), DefaultHomePresenter.View{
 
     override fun onDestroy() {
         super.onDestroy()
-//        presenter.clear()
+        presenter.clear()
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -46,7 +47,6 @@ class HomeActivity : BaseActivity(), DefaultHomePresenter.View{
         outState?.putParcelable("position", movie_list.layoutManager?.onSaveInstanceState())
     }
 
-    private var state: LinearLayoutManager.SavedState? = null
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
