@@ -12,6 +12,7 @@ import it.android.luca.movieapp.repository.Movie
 import android.app.Activity
 import android.content.Intent
 import android.util.DisplayMetrics
+import com.bumptech.glide.request.RequestOptions
 import it.android.luca.movieapp.detail.ui.DetailActivity
 import it.android.luca.movieapp.home.presenter.DefaultHomePresenter
 import it.android.luca.movieapp.network.MovieApi.Companion.IMAGE_URL
@@ -34,17 +35,14 @@ class HomeMoviesAdapter(val presenter: DefaultHomePresenter) : RecyclerView.Adap
     override fun onBindViewHolder(holder: MovieHolder, position: Int) {
         holder.bindId(homeList[position].id.toString())
         Glide.with(holder.context)
-            .load(IMAGE_URL+homeList[position].poster_path)
+            .load(IMAGE_URL + homeList[position].poster_path)
             .into(holder.poster)
     }
 
-    fun addItems(movies: List<Movie>){
-//        if(!homeList.containsAll(movies)) {
-            homeList.addAll(movies)
-            notifyDataSetChanged()
-//        }
+    fun addItems(movies: List<Movie>) {
+        homeList.addAll(movies)
+        notifyDataSetChanged()
     }
-
 
 
     class MovieHolder(itemView: View, val context: Context) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
@@ -57,7 +55,7 @@ class HomeMoviesAdapter(val presenter: DefaultHomePresenter) : RecyclerView.Adap
             itemView.setOnClickListener(this)
         }
 
-        fun bindId(id: String){
+        fun bindId(id: String) {
             this.id = id
         }
 

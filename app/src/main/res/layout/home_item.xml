@@ -9,5 +9,5 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/homepage_item_padding"
             android:scaleType="fitXY"
-            />
+    />
 </FrameLayout>
