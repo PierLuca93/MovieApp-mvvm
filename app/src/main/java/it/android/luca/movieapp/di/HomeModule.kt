@@ -3,18 +3,16 @@ package it.android.luca.movieapp.di
 import dagger.Provides
 import dagger.Module
 import it.android.luca.movieapp.home.presenter.DefaultHomePresenter
+import it.android.luca.movieapp.home.viewmodel.HomeViewModelFactory
 import it.android.luca.movieapp.network.MovieService
 import javax.inject.Singleton
 
 
 @Module
-class HomeModule(val view: DefaultHomePresenter.View) {
+class HomeModule {
 
     @Provides
-    fun provideView(): DefaultHomePresenter.View = view
-
-    @Provides
-    fun providePresenter(service: MovieService, view: DefaultHomePresenter.View): DefaultHomePresenter {
-        return DefaultHomePresenter(service, view)
+    fun provideViewModel(service: MovieService): HomeViewModelFactory{
+        return HomeViewModelFactory(service)
     }
 }

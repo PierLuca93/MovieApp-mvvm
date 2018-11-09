@@ -19,7 +19,7 @@ import it.android.luca.movieapp.network.MovieApi.Companion.IMAGE_URL
 import it.android.luca.movieapp.util.Utils.Companion.convertDpToPixel
 
 
-class HomeMoviesAdapter(val presenter: DefaultHomePresenter) : RecyclerView.Adapter<HomeMoviesAdapter.MovieHolder>() {
+class HomeMoviesAdapter() : RecyclerView.Adapter<HomeMoviesAdapter.MovieHolder>() {
 
 
     private var homeList: ArrayList<Movie> = ArrayList()
