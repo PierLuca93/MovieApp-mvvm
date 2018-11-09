@@ -14,7 +14,6 @@ import it.android.luca.movieapp.App
 import it.android.luca.movieapp.BaseActivity
 import it.android.luca.movieapp.R
 import it.android.luca.movieapp.R.id.*
-import it.android.luca.movieapp.detail.presenter.DefaultDetailPresenter
 import it.android.luca.movieapp.detail.viewmodel.DetailViewModel
 import it.android.luca.movieapp.detail.viewmodel.DetailViewModelFactory
 import it.android.luca.movieapp.di.DaggerDetailComponent
@@ -28,7 +27,7 @@ import it.android.luca.movieapp.repository.Movie
 import kotlinx.android.synthetic.main.activity_detail.*
 import javax.inject.Inject
 
-class DetailActivity : BaseActivity(), DefaultDetailPresenter.View {
+class DetailActivity : BaseActivity(){
 
     @Inject
     lateinit var factory: DetailViewModelFactory
@@ -64,11 +63,11 @@ class DetailActivity : BaseActivity(), DefaultDetailPresenter.View {
     private fun initDagger(){
         DaggerDetailComponent.builder()
             .appComponent((application as App).getAppComponent())
-            .detailModule(DetailModule(this))
+            .detailModule(DetailModule())
             .build().inject(this)
     }
 
-    override fun showMovie(item: Movie) {
+    fun showMovie(item: Movie) {
         page_title.text = item.title
         release_date.text = item.release_date
         description.text = item.overview
