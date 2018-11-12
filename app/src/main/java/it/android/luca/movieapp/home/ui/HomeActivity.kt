@@ -81,9 +81,6 @@ class HomeActivity : BaseActivity(){
 
     private fun showMovies(items: List<Movie>) {
         adapter?.addItems(items)
-//        if(state != null) {
-//            movie_list.layoutManager?.onRestoreInstanceState(state)
-//        }
     }
 
 }
