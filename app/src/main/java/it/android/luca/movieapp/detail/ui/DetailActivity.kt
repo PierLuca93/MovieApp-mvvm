@@ -20,7 +20,6 @@ import it.android.luca.movieapp.di.DaggerDetailComponent
 import it.android.luca.movieapp.di.DaggerHomeComponent
 import it.android.luca.movieapp.di.DetailModule
 import it.android.luca.movieapp.di.HomeModule
-import it.android.luca.movieapp.home.presenter.DefaultHomePresenter
 import it.android.luca.movieapp.network.MovieApi
 import it.android.luca.movieapp.network.MovieApi.Companion.IMAGE_URL
 import it.android.luca.movieapp.repository.Movie

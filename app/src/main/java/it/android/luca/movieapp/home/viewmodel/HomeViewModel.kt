@@ -4,13 +4,14 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.view.View.GONE
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import it.android.luca.movieapp.network.MovieService
 import it.android.luca.movieapp.repository.Movie
 
 class HomeViewModel(val service: MovieService): ViewModel() {
 
-    var homeFeed: BehaviorSubject<Int> = BehaviorSubject.create()
+    var homeFeed: PublishSubject<Int> = PublishSubject.create()
+    var movieList = ArrayList<Movie>()
     val homeMoviesList = MutableLiveData<ArrayList<Movie>>()
     val errorMessage = MutableLiveData<String>()
     val inProgress = MutableLiveData<Int>()
@@ -26,12 +27,19 @@ class HomeViewModel(val service: MovieService): ViewModel() {
                     }
                     .subscribe(
                         {
-                            homeMoviesList.value = it!!.results
+                            if(!movieList.containsAll(it!!.results)) {
+                                movieList.addAll(it!!.results)
+                                homeMoviesList.value = movieList
+                            }
                         },
                         {
                             errorMessage.value = it.message
                         })
             })
+    }
+
+    fun clear(){
+        subscription.clear()
     }
 
     fun fetchMovies() {

@@ -2,7 +2,6 @@ package it.android.luca.movieapp.repository
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import java.io.Serializable
 
 data class Movie(
     @SerializedName("vote_count")
@@ -47,4 +46,15 @@ data class Movie(
     @SerializedName("release_date")
     @Expose
     val release_date: String
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Movie
+
+        if (id != other.id) return false
+
+        return true
+    }
+}

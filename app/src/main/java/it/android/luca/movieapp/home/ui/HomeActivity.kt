@@ -28,7 +28,6 @@ class HomeActivity : BaseActivity(){
     @Inject
     lateinit var viewModelFactory: HomeViewModelFactory
     private var column: Int = 2
-    private var homeLayoutManager: GridLayoutManager? = null
     private var adapter: HomeMoviesAdapter? = null
     private var state: LinearLayoutManager.SavedState? = null
 
@@ -39,11 +38,18 @@ class HomeActivity : BaseActivity(){
         setContentView(R.layout.activity_home)
         initDagger()
         initViews()
+//        state = savedInstanceState?.getParcelable("position")
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
         viewModel.homeMoviesList.observe(this@HomeActivity, Observer { it?.let { showMovies(it) } })
         viewModel.errorMessage.observe(this@HomeActivity, Observer { it?.let { showError(it) } })
         viewModel.inProgress.observe(this@HomeActivity, Observer { it?.let { showLoading(it == VISIBLE) } })
         viewModel.fetchMovies()
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+//        viewModel.clear()
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -55,19 +61,19 @@ class HomeActivity : BaseActivity(){
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
         state = savedInstanceState?.getParcelable("position")
+//        movie_list.layoutManager?.onRestoreInstanceState(state)
     }
 
 
     private fun initViews(){
-        homeLayoutManager = GridLayoutManager(this, column)
-        movie_list.layoutManager = homeLayoutManager
+        movie_list.layoutManager = GridLayoutManager(this, column)
         movie_list.setHasFixedSize(true)
         adapter = HomeMoviesAdapter()
         movie_list.adapter = adapter
         movie_list.addOnScrollListener(object: RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if(homeLayoutManager!!.findLastCompletelyVisibleItemPosition() == adapter!!.itemCount-1){
+                if((movie_list.layoutManager!! as GridLayoutManager).findLastCompletelyVisibleItemPosition() == adapter!!.itemCount-5){
                     viewModel.loadNextPage(adapter!!.itemCount/20+1)
                 }
             }
@@ -81,9 +87,11 @@ class HomeActivity : BaseActivity(){
             .build().inject(this)
     }
 
-    fun showMovies(items: List<Movie>) {
+    private fun showMovies(items: List<Movie>) {
         adapter?.addItems(items)
-        state?.let { movie_list.layoutManager?.onRestoreInstanceState(it) }
+//        if(state != null) {
+//            movie_list.layoutManager?.onRestoreInstanceState(state)
+//        }
     }
 
 }

@@ -8,15 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import it.android.luca.movieapp.R
-import it.android.luca.movieapp.repository.Movie
 import it.android.luca.movieapp.detail.ui.DetailActivity
 import it.android.luca.movieapp.network.MovieApi.Companion.IMAGE_URL
+import it.android.luca.movieapp.repository.Movie
 
 
 class HomeMoviesAdapter : RecyclerView.Adapter<HomeMoviesAdapter.MovieHolder>() {
 
-
-    private var homeList: ArrayList<Movie> = ArrayList()
+        private var homeList: ArrayList<Movie> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.home_item, parent, false)
@@ -35,8 +34,15 @@ class HomeMoviesAdapter : RecyclerView.Adapter<HomeMoviesAdapter.MovieHolder>() 
 
     fun addItems(movies: List<Movie>) {
         val oldcount = itemCount
-        homeList.addAll(movies)
-        if(oldcount != 0 ) notifyItemRangeChanged(oldcount, 20) else notifyDataSetChanged()
+//        val diffResult = DiffUtil.calculateDiff(MoviesDiffCallback(homeList, movies))
+//        if(!homeList.containsAll(movies)) {
+//            homeList.addAll(movies)
+        homeList = movies as ArrayList<Movie>
+//        diffResult.dispatchUpdatesTo(this)
+//            notifyItemRangeInserted(oldcount, 20)
+//        }
+        notifyDataSetChanged()
+//        if(oldcount != 0 ) notifyItemRangeInserted(oldcount, 20) else notifyDataSetChanged()
     }
 
 
