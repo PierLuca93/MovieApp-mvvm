@@ -42,6 +42,7 @@
             android:padding="@dimen/detail_padding_description"
             app:layout_constraintTop_toBottomOf="@id/release_date"
             android:maxLines="3"
+            android:textAlignment="center"
             android:ellipsize="end"/>
 
     <include

@@ -2,7 +2,6 @@ package it.android.luca.movieapp.home.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.view.View.GONE
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
 import it.android.luca.movieapp.network.MovieService
@@ -14,7 +13,7 @@ class HomeViewModel(val service: MovieService): ViewModel() {
     var movieList = ArrayList<Movie>()
     val homeMoviesList = MutableLiveData<ArrayList<Movie>>()
     val errorMessage = MutableLiveData<String>()
-    val inProgress = MutableLiveData<Int>()
+    val inProgress = MutableLiveData<Boolean>()
     private val subscription: CompositeDisposable = CompositeDisposable()
 
     init {
@@ -23,7 +22,7 @@ class HomeViewModel(val service: MovieService): ViewModel() {
                 service.getTopRated(it)
                     .filter { it != null }
                     .doFinally {
-                        inProgress.value = GONE
+                        inProgress.value = false
                     }
                     .subscribe(
                         {
@@ -36,6 +35,11 @@ class HomeViewModel(val service: MovieService): ViewModel() {
                             errorMessage.value = it.message
                         })
             })
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        clear()
     }
 
     fun clear(){

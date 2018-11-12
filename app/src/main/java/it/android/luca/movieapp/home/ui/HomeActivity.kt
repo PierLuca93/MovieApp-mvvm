@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.View.VISIBLE
 import it.android.luca.movieapp.App
 import it.android.luca.movieapp.BaseActivity
 import it.android.luca.movieapp.R
@@ -38,18 +37,12 @@ class HomeActivity : BaseActivity(){
         setContentView(R.layout.activity_home)
         initDagger()
         initViews()
-//        state = savedInstanceState?.getParcelable("position")
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
         viewModel.homeMoviesList.observe(this@HomeActivity, Observer { it?.let { showMovies(it) } })
         viewModel.errorMessage.observe(this@HomeActivity, Observer { it?.let { showError(it) } })
-        viewModel.inProgress.observe(this@HomeActivity, Observer { it?.let { showLoading(it == VISIBLE) } })
+        viewModel.inProgress.observe(this@HomeActivity, Observer { it?.let { showLoading(it) } })
         viewModel.fetchMovies()
 
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-//        viewModel.clear()
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -61,7 +54,6 @@ class HomeActivity : BaseActivity(){
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
         state = savedInstanceState?.getParcelable("position")
-//        movie_list.layoutManager?.onRestoreInstanceState(state)
     }
 
 
@@ -73,7 +65,7 @@ class HomeActivity : BaseActivity(){
         movie_list.addOnScrollListener(object: RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if((movie_list.layoutManager!! as GridLayoutManager).findLastCompletelyVisibleItemPosition() == adapter!!.itemCount-5){
+                if((movie_list.layoutManager!! as GridLayoutManager).findLastCompletelyVisibleItemPosition() >= adapter!!.itemCount-5){
                     viewModel.loadNextPage(adapter!!.itemCount/20+1)
                 }
             }
