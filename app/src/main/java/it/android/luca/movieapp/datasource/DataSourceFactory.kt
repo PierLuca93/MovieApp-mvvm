@@ -1,4 +1,4 @@
-package it.android.luca.movieapp
+package it.android.luca.movieapp.datasource
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.paging.DataSource

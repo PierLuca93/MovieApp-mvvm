@@ -2,7 +2,7 @@ package it.android.luca.movieapp.home.viewmodel
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import it.android.luca.movieapp.DataSourceFactory
+import it.android.luca.movieapp.datasource.DataSourceFactory
 import it.android.luca.movieapp.network.MovieService
 import javax.inject.Inject
 

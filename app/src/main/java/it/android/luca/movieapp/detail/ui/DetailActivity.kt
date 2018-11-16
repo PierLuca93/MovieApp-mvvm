@@ -79,7 +79,7 @@ class DetailActivity : BaseActivity(), DynamicColorsActivity{
 
     companion object {
 
-        val MOVIE_ID = "movie_id"
+        const val MOVIE_ID = "movie_id"
 
         fun createIntent(context: Context, id: String){
             val intent = Intent(context, DetailActivity::class.java)

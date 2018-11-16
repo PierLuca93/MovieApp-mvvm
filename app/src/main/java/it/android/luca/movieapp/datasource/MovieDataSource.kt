@@ -1,4 +1,4 @@
-package it.android.luca.movieapp
+package it.android.luca.movieapp.datasource
 
 import android.arch.paging.PageKeyedDataSource
 import it.android.luca.movieapp.network.MovieService
