@@ -16,10 +16,7 @@ import kotlinx.android.synthetic.main.activity_home.*
 import javax.inject.Inject
 
 
-
-
-
-class HomeActivity : BaseActivity(){
+class HomeActivity : BaseActivity() {
 
 
     @Inject
@@ -35,19 +32,7 @@ class HomeActivity : BaseActivity(){
         setContentView(R.layout.activity_home)
         initDagger()
         initViews()
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
-        viewModel.homeMoviesList.observe(this@HomeActivity, Observer { it?.let {
-            adapter?.submitList(it)
-            showLoading(false)
-        } })
-        viewModel.errorMessage.observe(this@HomeActivity, Observer { it?.let { showError(it) } })
-        viewModel.inProgress.observe(this@HomeActivity, Observer { it?.let { showLoading(it) } })
-//        viewModel.posts.observe(this, Observer<PagedList<Movie>> {
-//            adapter?.submitList(it)
-//        })
-//        viewModel.retry()
-////        viewModel.fetchMovies()
-
+        initViewModel()
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -61,34 +46,30 @@ class HomeActivity : BaseActivity(){
         state = savedInstanceState?.getParcelable("position")
     }
 
+    private fun initViewModel() {
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
+        viewModel.homeMoviesList.observe(this@HomeActivity, Observer {
+            it?.let {
+                adapter?.submitList(it)
+                showLoading(false)
+            }
+        })
+        viewModel.errorMessage.observe(this@HomeActivity, Observer { it?.let { showError(it) } })
+        viewModel.inProgress.observe(this@HomeActivity, Observer { it?.let { showLoading(it) } })
+    }
 
-    private fun initViews(){
+    private fun initViews() {
         movie_list.layoutManager = GridLayoutManager(this, column)
 //        movie_list.setHasFixedSize(true)
         adapter = HomeMoviesAdapter()
         movie_list.adapter = adapter
-//        movie_list.addOnScrollListener(object: RecyclerView.OnScrollListener() {
-//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                super.onScrolled(recyclerView, dx, dy)
-//                if((movie_list.layoutManager!! as GridLayoutManager).findLastCompletelyVisibleItemPosition() >= adapter!!.itemCount-5){
-//                    viewModel.loadNextPage(adapter!!.itemCount/20+1)
-//                }
-//            }
-//        })
     }
 
-    private fun initDagger(){
+    private fun initDagger() {
         DaggerHomeComponent.builder()
             .appComponent((application as App).getAppComponent())
             .homeModule(HomeModule())
             .build().inject(this)
     }
-
-//    private fun showMovies(items: List<Movie>) {
-//        adapter?.addItems(items)
-////        if(state != null) {
-////            movie_list.layoutManager?.onRestoreInstanceState(state)
-////        }
-//    }
 
 }
