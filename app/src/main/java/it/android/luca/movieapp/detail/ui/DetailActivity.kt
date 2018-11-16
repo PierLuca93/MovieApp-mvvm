@@ -39,21 +39,6 @@ class DetailActivity : BaseActivity(), DynamicColorsActivity{
         viewModel.errorMessage.observe(this@DetailActivity, Observer { it?.let{ showError(it) } })
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-//        presenter.clear()
-    }
-
-    private fun initViews(){
-        description.setOnClickListener {
-            if(description.maxLines == 3) {
-                description.maxLines = Int.MAX_VALUE
-            } else {
-                description.maxLines = 3
-            }
-        }
-    }
-
     private fun initToolbar() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -72,7 +57,7 @@ class DetailActivity : BaseActivity(), DynamicColorsActivity{
             .build().inject(this)
     }
 
-    fun showMovie(item: Movie) {
+    private fun showMovie(item: Movie) {
         collapsing_toolbar.title = item.title
         val date = SimpleDateFormat("yyyy-MM-dd").parse(item.release_date)
         release_date.text = SimpleDateFormat("dd-MM-yyyy").format(date)
