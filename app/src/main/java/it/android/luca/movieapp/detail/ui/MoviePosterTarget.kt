@@ -23,30 +23,41 @@ class MoviePosterTarget(val poster: ImageView, val activity: DynamicColorsActivi
         val b = (resource.current as BitmapDrawable).bitmap
 
         Palette.from(b).clearFilters().generate { palette ->
-            val black = Color.BLACK
-            val white = Color.WHITE
-            val vibrant = palette!!.vibrantSwatch
-            val dominant = palette.dominantSwatch
-            var bgColor = vibrant?.rgb ?: black
-            var textColor = vibrant?.bodyTextColor ?: white
-            dominant?.let {
-                if (it.population > 2000) {
-                    bgColor = it.rgb
-                    textColor = vibrant?.rgb ?: white
-                }
-            }
-            if (similarColors(bgColor, textColor)) {
-                if (bgColor == dominant?.rgb) {
-                    textColor = if (closerToBlack(bgColor)) white else black
-                } else {
-                    bgColor = if (closerToBlack(textColor)) white else black
-                }
-            }
-            activity.setTextColor(textColor)
-            activity.setBackgroundColor(bgColor)
-
+            val extractor = ColorExtractor()
+            extractor.onGenerated(palette)
+            activity.setTextColor(extractor.textColor)
+            activity.setBackgroundColor(extractor.bgColor)
         }
 
+    }
+}
+
+class ColorExtractor: Palette.PaletteAsyncListener{
+
+    val black = Color.BLACK
+    val white = Color.WHITE
+    var bgColor = black
+    var textColor = white
+
+    override fun onGenerated(palette: Palette?) {
+
+        val vibrant = palette!!.vibrantSwatch
+        val dominant = palette.dominantSwatch
+        bgColor = vibrant?.rgb ?: black
+        textColor = vibrant?.bodyTextColor ?: white
+        dominant?.let {
+            if (it.population > 2000) {
+                bgColor = it.rgb
+                textColor = vibrant?.rgb ?: white
+            }
+        }
+        if (similarColors(bgColor, textColor)) {
+            if (bgColor == dominant?.rgb) {
+                textColor = if (closerToBlack(bgColor)) white else black
+            } else {
+                bgColor = if (closerToBlack(textColor)) white else black
+            }
+        }
     }
 
     private fun colorDistance(first: Int, second: Int): Double {
@@ -63,6 +74,7 @@ class MoviePosterTarget(val poster: ImageView, val activity: DynamicColorsActivi
     private fun closerToBlack(color: Int): Boolean {
         return colorDistance(color, Color.BLACK) < 220
     }
+
 }
 
 interface DynamicColorsActivity{
