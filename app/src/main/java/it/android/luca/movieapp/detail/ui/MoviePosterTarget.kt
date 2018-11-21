@@ -7,11 +7,12 @@ import android.support.v7.graphics.Palette
 import android.widget.ImageView
 import com.bumptech.glide.request.target.ImageViewTarget
 
-class MoviePosterTarget(val poster: ImageView, val activity: DynamicColorsActivity) : ImageViewTarget<Drawable>(poster) {
+class MoviePosterTarget(val poster: ImageView, val activity: DynamicColorsActivity) :
+    ImageViewTarget<Drawable>(poster) {
     override fun setResource(resource: android.graphics.drawable.Drawable?) {
         resource?.let {
             setImage(it)
-            extractColor(it)
+            generatePalette(it)
         }
     }
 
@@ -19,20 +20,14 @@ class MoviePosterTarget(val poster: ImageView, val activity: DynamicColorsActivi
         poster.setBackgroundDrawable(resource)
     }
 
-    private fun extractColor(resource: android.graphics.drawable.Drawable) {
+    private fun generatePalette(resource: android.graphics.drawable.Drawable) {
         val b = (resource.current as BitmapDrawable).bitmap
-
-        Palette.from(b).clearFilters().generate { palette ->
-            val extractor = ColorExtractor()
-            extractor.onGenerated(palette)
-            activity.setTextColor(extractor.textColor)
-            activity.setBackgroundColor(extractor.bgColor)
-        }
+        Palette.from(b).clearFilters().generate(ColorExtractor(activity))
 
     }
 }
 
-class ColorExtractor: Palette.PaletteAsyncListener{
+class ColorExtractor(private val activity: DynamicColorsActivity) : Palette.PaletteAsyncListener {
 
     val black = Color.BLACK
     val white = Color.WHITE
@@ -40,7 +35,11 @@ class ColorExtractor: Palette.PaletteAsyncListener{
     var textColor = white
 
     override fun onGenerated(palette: Palette?) {
+        extractColors(palette)
+        setColors()
+    }
 
+    private fun extractColors(palette: Palette?) {
         val vibrant = palette!!.vibrantSwatch
         val dominant = palette.dominantSwatch
         bgColor = vibrant?.rgb ?: black
@@ -60,6 +59,11 @@ class ColorExtractor: Palette.PaletteAsyncListener{
         }
     }
 
+    private fun setColors() {
+        activity.setBackgroundColor(bgColor)
+        activity.setTextColor(textColor)
+    }
+
     private fun colorDistance(first: Int, second: Int): Double {
         val squareDistance = Math.pow(Color.red(first) - Color.red(second).toDouble(), 2.0) +
                 Math.pow(Color.green(first) - Color.green(second).toDouble(), 2.0) +
@@ -67,7 +71,7 @@ class ColorExtractor: Palette.PaletteAsyncListener{
         return Math.sqrt(squareDistance)
     }
 
-    private fun similarColors(first: Int, second: Int): Boolean{
+    private fun similarColors(first: Int, second: Int): Boolean {
         return colorDistance(first, second) < 50
     }
 
@@ -77,7 +81,7 @@ class ColorExtractor: Palette.PaletteAsyncListener{
 
 }
 
-interface DynamicColorsActivity{
+interface DynamicColorsActivity {
     fun setTextColor(color: Int)
     fun setBackgroundColor(color: Int)
 }
